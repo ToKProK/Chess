@@ -20,6 +20,6 @@ class Game:
                     color = (119, 154, 88) #тёмно-зелённый
                     rect = ()
 
-                rect = (col * SQsize, row * SQsize, SQsize, SQsize)
+                rect = (col * SQsize, row * SQsize, SQsize, SQsize) #так сказать рисуем квадрат (1 параметр x, потом y, далее длина и ширина)
 
                 pygame.draw.rect(surface, color, rect)
