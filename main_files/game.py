@@ -8,7 +8,7 @@ class Game:
         self.board = Board()
 
 
-    #показывает методы
+    # Рисуем доску
 
     def show_bg(self, surface): 
         for row in range(Rows):
@@ -23,6 +23,7 @@ class Game:
 
                 pygame.draw.rect(surface, color, rect)
     
+    # Рисуем фигуры
     def show_pieces(self, surface):
         for row in range(Rows):
             for col in range(Cols):
