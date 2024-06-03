@@ -1,11 +1,11 @@
 import pygame
-
+from board import Board
 from const import *
 
 class Game:
 
     def __init__(self):
-        pass
+        self.board = Board()
 
 
     #показывает методы
@@ -26,9 +26,8 @@ class Game:
     def show_pieces(self, surface):
         for row in range(Rows):
             for col in range(Cols):
-                if self.board.squere[row][col].has_piece():
-                    piece = self.board.square[row][col].piece
-                    
+                if self.board.squares[row][col].has_piece():
+                    piece = self.board.squares[row][col].piece
                     img = pygame.image.load(piece.texture)
                     img_center = col * SQsize + SQsize // 2, row * SQsize + SQsize // 2
                     piece.texture_rect = img.get_rect(center = img_center)

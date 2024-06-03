@@ -3,15 +3,15 @@ from square import Square
 from piece import *
 
 
-class board:
+class Board:
 
     def __init__(self):
         self.squares = [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(Cols)] # создали для каждого солбца базовое значение, с которым мы будем работать.
-        self._crate()
+        self._create()
         self._add_piece('white')
         self._add_piece('black')
 
-    def _crate(self):
+    def _create(self):
         for row in range(Rows):
             for col in range(Cols):
                 self.squares[row][col] = Square(row, col)
@@ -26,8 +26,8 @@ class board:
             self.squares[row_pawn][col] = Square(row_pawn, col, Pawn(color))
         
         #метод для конь
-        self.squares[row_other][1] = Square(row_other, 1, knight(color))
-        self.squares[row_other][6] = Square(row_other, 6, knight(color))
+        self.squares[row_other][1] = Square(row_other, 1, Knight(color))
+        self.squares[row_other][6] = Square(row_other, 6, Knight(color))
         
         #метод для слонов
         self.squares[row_other][2] = Square(row_other, 2, Bishop(color))
@@ -42,5 +42,5 @@ class board:
 
 
         #метод для короля
-        self.squares[row_other][4] = Square(row_other, 4, king(color))
+        self.squares[row_other][4] = Square(row_other, 4, King(color))
 
