@@ -18,7 +18,7 @@ class Game:
                     color = (234, 235, 200) #зелённый
                 else: 
                     color = (119, 154, 88) #тёмно-зелённый
-                    rect = ()
+                    #rect = ()
 
                 rect = (col * SQsize, row * SQsize, SQsize, SQsize) #так сказать рисуем квадрат (1 параметр x, потом y, далее длина и ширина)
 
