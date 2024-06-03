@@ -11,14 +11,20 @@ class Main:
         pygame.display.set_caption("Шахматы")
         self.game = Game()
     def mainloop(self):
-        sceen = self.screen
+        screen = self.screen
         game = self.game
+
         while True:
-            self.game.show_bg(self.screen)
+            self.game.show_bg(screen)
+            game.show_pieces(screen)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
+
+
             pygame.display.update()
 main = Main()
 main.mainloop()
