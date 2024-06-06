@@ -2,7 +2,7 @@ from const import *
 from square import Square
 from piece import *
 
-
+# Данный класс представляет доску, которя является массивом "squares"
 class Board:
 
     def __init__(self):
@@ -18,10 +18,9 @@ class Board:
                 
 
     def _add_piece(self, color):
-        row_pawn, row_other = (6, 7) if color == 'white' else (1, 0)
+        row_pawn, row_other = (6, 7) if color == 'white' else (1, 0) 
 
         #метод для пешки
-
         for col in range(Cols):
             self.squares[row_pawn][col] = Square(row_pawn, col, Pawn(color))
         

@@ -1,5 +1,5 @@
 import os
-
+# Данный класс отвечает за фигуры на достке
 class Piese:
     def __init__(self, name, color, value, texture=None, texture_rect=None):
         self.name = name
