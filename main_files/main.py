@@ -18,6 +18,9 @@ class Main:
             game.show_bg(screen)
             game.show_pieces(screen)
             
+            if dragger.dragging:
+                dragger.upadate_blit(screen)
+
             for event in pygame.event.get():
                 
                 # Клик
@@ -27,27 +30,25 @@ class Main:
                     clicked_Col = dragger.mouse_Y // SQsize # Номер, нажатого столбца (начиная с нуля).
                     print(f"({dragger.mouse_X,dragger.mouse_Y}), ({clicked_Row,clicked_Col})")
                     if game.board.squares[clicked_Col][clicked_Row].has_piece():  # На выбранной клетке в массиве squares есть ли фигура?
-                        piece = game.board.squares[clicked_Row][clicked_Col].piece
-                        dragger.save_initial(event.pos) # Сохраняем выбранную позицию
+                        piece = game.board.squares[clicked_Col][clicked_Row].piece
+                        dragger.save_initial(event.pos) # Сохраняем первоночальную позицию, для отката.
                         dragger.drag_piece(piece) # Сохраняем выбранную фигуру
+                
                 # Передвижение мышки
                 elif event.type == pygame.MOUSEMOTION:
                     if dragger.dragging == True: # Данное условие позволяет остеживать передвижение мыши, только при зажатой кнопке на фигуре.
-                        dragger.update_mouse_position(event.pos)
-                        dragger.upadate_blit(screen)
+                        dragger.update_mouse_position(event.pos) # Обнавляем позицию курсора
+                        #dragger.upadate_blit(screen) # Рисуем фигуру на месте курсора
 
                 # Отпускание клика
                 elif event.type == pygame.MOUSEBUTTONUP:
-                    pass
+                    dragger.undrag_piece()
 
 
                 #Выход из приложения
                 elif event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-
-
-
             pygame.display.update()
 main = Main()
 main.mainloop()
