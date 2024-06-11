@@ -18,7 +18,7 @@ class Dragger:
         texture = self.piec.texture
         #img
         img = pygame.image.load(texture)
-        # rect
+        # rectа
         img_center = (self.mouse_X, self.mouse_Y)
         self.piec.texture_rect = img.get_rect(center=img_center)
         #Проецируем

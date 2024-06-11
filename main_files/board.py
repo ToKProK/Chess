@@ -43,3 +43,17 @@ class Board:
         #метод для короля
         self.squares[row_other][4] = Square(row_other, 4, King(color))
 
+
+    def cal_moves(self, piece, row, col):
+        if isinstance(piece, Pawn):  # piece.nam
+            pass
+        elif isinstance(piece, Knight):
+            pass
+        elif isinstance(piece, Bishop):
+            pass
+        elif isinstance(piece, Rook):
+            pass
+        elif isinstance(piece, Queen):
+            pass
+        elif isinstance(piece, King):
+            pass
