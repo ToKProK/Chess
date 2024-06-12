@@ -1,6 +1,7 @@
 from const import *
 from square import Square
 from piece import *
+from main_files.move import Move
 
 # Данный класс представляет доску, которя является массивом "squares"
 class Board:
@@ -39,7 +40,6 @@ class Board:
         #метод для королевы
         self.squares[row_other][3] = Square(row_other, 3, Queen(color))
 
-
         #метод для короля
         self.squares[row_other][4] = Square(row_other, 4, King(color))
 
@@ -58,6 +58,23 @@ class Board:
                 (row - 1, col - 2),
                 (row - 2, col - 1),
             ]
+            for pos_move in possible_move:
+                pos_move_row, pos_move_col = pos_move
+
+                if Square.in_range(pos_move_row, pos_move_col): #Проверка каждого хода на выход фигуры за игровую доску
+                    if self.squares[pos_move_row, pos_move_col].empty_or_enemy(piece.color):# Проверка каждого хода на наличие противника или пустой клетки
+                        # Фиксирую позицию выбранной фигуры
+                        initial_square = Square(row, col)
+                        # Фикирую все возможный ходы фигуры
+                        new_move_square = Square(pos_move_row, pos_move_col) # Недоделал фигуры(piece)
+
+                        move = Move(initial_square, new_move_square)
+
+                        piece.add_move(move)
+                        
+
+
+
 
         if isinstance(piece, Pawn):  # piece.name == 'pawn' (одно и тоже)
             pass
