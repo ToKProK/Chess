@@ -25,7 +25,7 @@ class Pawn(Piese):
         self.dir = -1 if color == 'white' else 1
         super().__init__('pawn', color, 1.0)
 
-class Knight(Piese):
+class Knight(Piese):# Конь
     def __init__(self, color):
         super().__init__("knight", color, 3.0)
 

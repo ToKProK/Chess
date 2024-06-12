@@ -45,10 +45,24 @@ class Board:
 
 
     def cal_moves(self, piece, row, col):
-        if isinstance(piece, Pawn):  # piece.nam
+
+        def knight_moves():
+            # В идеале у коня 8 возможных ходов
+            possible_move = [
+                (row - 2, col + 1),
+                (row - 1, col + 2),
+                (row + 1, col + 2),
+                (row + 2, col + 1),
+                (row + 2, col + 1),
+                (row + 1, col - 2),
+                (row - 1, col - 2),
+                (row - 2, col - 1),
+            ]
+
+        if isinstance(piece, Pawn):  # piece.name == 'pawn' (одно и тоже)
             pass
-        elif isinstance(piece, Knight):
-            pass
+        elif isinstance(piece, Knight): # Конь
+            knight_moves()
         elif isinstance(piece, Bishop):
             pass
         elif isinstance(piece, Rook):
