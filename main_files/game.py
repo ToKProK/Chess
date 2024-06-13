@@ -38,5 +38,8 @@ class Game:
         if self.dragger.dragging: # Проверка на перетаскивание курсора
             piece = self.dragger.piece
             for move in piece.moves:
-                piece = self.dragger.piece
-                
+                color = "#C86464" if (move.final.row + move.final.col) % 2 == 0 else "#C84646"
+
+                rect = (move.final.col * SQsize, move.final.row * SQsize, SQsize, SQsize)
+
+                pygame.draw.rect(surface, color, rect)

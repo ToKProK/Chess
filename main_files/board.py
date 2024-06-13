@@ -48,27 +48,27 @@ class Board:
 
         def knight_moves():
             # В идеале у коня 8 возможных ходов
-            possible_move = [
+            possible_moves = [
                 (row - 2, col + 1),
                 (row - 1, col + 2),
                 (row + 1, col + 2),
                 (row + 2, col + 1),
-                (row + 2, col + 1),
+                (row + 2, col - 1),
                 (row + 1, col - 2),
                 (row - 1, col - 2),
                 (row - 2, col - 1),
             ]
-            for pos_move in possible_move:
+            for pos_move in possible_moves:
                 pos_move_row, pos_move_col = pos_move
 
                 if Square.in_range(pos_move_row, pos_move_col): #Проверка каждого хода на выход фигуры за игровую доску
-                    if self.squares[pos_move_row, pos_move_col].empty_or_enemy(piece.color):# Проверка каждого хода на наличие противника или пустой клетки
+                    if self.squares[pos_move_row][pos_move_col].empty_or_enemy(piece.color):# Проверка каждого хода на наличие противника или пустой клетки
                         # Фиксирую позицию выбранной фигуры
-                        initial_square = Square(row, col)
+                        initial = Square(row, col)
                         # Фикирую все возможный ходы фигуры
-                        new_move_square = Square(pos_move_row, pos_move_col) # Недоделал фигуры(piece)
+                        final = Square(pos_move_row, pos_move_col) # Недоделал фигуры(piece)
 
-                        move = Move(initial_square, new_move_square)
+                        move = Move(initial, final)
 
                         piece.add_move(move)
                         

@@ -13,7 +13,7 @@ class Square: # Класс клетки, у которой есть свой р�
         return not self.has_piece() 
 
     def has_riva_piece(self, color):
-        return self.has_piece() and self.self.piece.color != color # Получаем True если выбрали фигуру соперника
+        return self.has_piece() and self.piece.color != color # Получаем True если выбрали фигуру соперника
 
     def empty_or_enemy(self, color): # Объеженил проерку двух методов выше
         return self.isempty() or self.has_riva_piece(color)
