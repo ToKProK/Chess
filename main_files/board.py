@@ -1,7 +1,7 @@
 from const import *
 from square import Square
 from piece import *
-from main_files.move import Move
+from move import Move
 
 # Данный класс представляет доску, которя является массивом "squares"
 class Board:

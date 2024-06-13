@@ -4,7 +4,7 @@ from const import *
 # Данный класс отвечает за перетаскивание фигуры
 class Dragger:
     def __init__(self):
-        self.piec = None
+        self.piece = None
         self.dragging = False
         self.mouse_X = 0
         self.mouse_Y = 0
@@ -14,15 +14,15 @@ class Dragger:
     # Метод перетаскивания (blit) фигур курсором
     def upadate_blit(self, surface): # Рисуем фигуру на месте курсора
         #texture 
-        self.piec.set_texture(size=128)
-        texture = self.piec.texture
+        self.piece.set_texture(size=128)
+        texture = self.piece.texture
         #img
         img = pygame.image.load(texture)
         # rectа
         img_center = (self.mouse_X, self.mouse_Y)
-        self.piec.texture_rect = img.get_rect(center=img_center)
+        self.piece.texture_rect = img.get_rect(center=img_center)
         #Проецируем
-        surface.blit(img, self.piec.texture_rect)
+        surface.blit(img, self.piece.texture_rect)
      
     # Остальные методы
 
@@ -33,11 +33,11 @@ class Dragger:
           self.init_row = pos[1] // SQsize
           self.init_col = pos[0] // SQsize
 
-    def drag_piece(self, piece): # Получаем данные о перетаскиваемой фигуре
-         self.piec = piece
+    def drag_piece(self, piecee): # Получаем данные о перетаскиваемой фигуре
+         self.piece = piecee
          self.dragging = True
         
     def undrag_piece(self): # выключаем перетаскивание
-         self.piec = None
+         self.piece = None
          self.dragging = False
 

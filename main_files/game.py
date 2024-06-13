@@ -27,9 +27,16 @@ class Game:
             for col in range(Cols):
                 if self.board.squares[row][col].has_piece(): # На выбранной клетке в массиве squares есть ли фигура?
                     piece = self.board.squares[row][col].piece
-                    if piece != self.dragger.piec: # Рисуем все фигуры, кроме перетаскиваемой
+                    if piece != self.dragger.piece: # Рисуем все фигуры, кроме перетаскиваемой
                         piece.set_texture(size=80)
                         img = pygame.image.load(piece.texture)
                         img_center = col * SQsize + SQsize // 2, row * SQsize + SQsize // 2 # Координаты центра клетки
                         piece.texture_rect = img.get_rect(center = img_center)
                         surface.blit(img, piece.texture_rect)
+
+    def show_moves(self, surface):
+        if self.dragger.dragging: # Проверка на перетаскивание курсора
+            piece = self.dragger.piece
+            for move in piece.moves:
+                piece = self.dragger.piece
+                

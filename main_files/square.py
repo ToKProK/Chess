@@ -6,16 +6,16 @@ class Square: # Класс клетки, у которой есть свой р�
         self.col = col 
         self.piece = piece 
 
-    def has_piece(self):
+    def has_piece(self): # Получаем True если есть фигура
         return self.piece != None
     
-    def isempty(self):
-        return not self.has_piece() # Получаем True Если клетка пуста
+    def isempty(self): # Получаем True если клетка пуста
+        return not self.has_piece() 
 
     def has_riva_piece(self, color):
-        return self.has_piece() and self.self.piece.color != color # Получаем True если Выбрали фигуру соперника
+        return self.has_piece() and self.self.piece.color != color # Получаем True если выбрали фигуру соперника
 
-    def empty_or_enemy(self, color):
+    def empty_or_enemy(self, color): # Объеженил проерку двух методов выше
         return self.isempty() or self.has_riva_piece(color)
     
 
