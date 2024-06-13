@@ -28,7 +28,6 @@ class Board:
         #метод для конь
         self.squares[row_other][1] = Square(row_other, 1, Knight(color))
         self.squares[row_other][6] = Square(row_other, 6, Knight(color))
-        
         #метод для слонов
         self.squares[row_other][2] = Square(row_other, 2, Bishop(color))
         self.squares[row_other][5] = Square(row_other, 5, Bishop(color))
@@ -46,6 +45,26 @@ class Board:
 
     def cal_moves(self, piece, row, col):
 
+        def pawn_moves():
+            step = 1 if piece.moved else 2
+            # Вертикальное движение
+            start = row + piece.dir
+            end = row + (piece.dir * (step + 1)) # + 1, поскольку в цикле for на 1 меньше
+            for move_row in range(start, end, piece.dir):
+                if Square.in_range(move_row): # Проверка каждого хода на выход фигуры за игровую доску
+                    if self.squares[move_row][col].isempty(): # Проверям, что клетка пустая
+                        initial = Square(row, col)
+
+                        final = Square(move_row, col)
+
+                        move = Move(initial, final)
+
+                        piece.add_move(move)
+                    else:
+                        break
+            # Диогональное движение
+            move_row = 
+            
         def knight_moves():
             # В идеале у коня 8 возможных ходов
             possible_moves = [
@@ -61,7 +80,7 @@ class Board:
             for pos_move in possible_moves:
                 pos_move_row, pos_move_col = pos_move
 
-                if Square.in_range(pos_move_row, pos_move_col): #Проверка каждого хода на выход фигуры за игровую доску
+                if Square.in_range(pos_move_row, pos_move_col): # Проверка каждого хода на выход фигуры за игровую доску
                     if self.squares[pos_move_row][pos_move_col].empty_or_enemy(piece.color):# Проверка каждого хода на наличие противника или пустой клетки
                         # Фиксирую позицию выбранной фигуры
                         initial = Square(row, col)
@@ -73,11 +92,8 @@ class Board:
                         piece.add_move(move)
                         
 
-
-
-
         if isinstance(piece, Pawn):  # piece.name == 'pawn' (одно и тоже)
-            pass
+            pawn_moves()
         elif isinstance(piece, Knight): # Конь
             knight_moves()
         elif isinstance(piece, Bishop):
