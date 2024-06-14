@@ -30,7 +30,7 @@ class Main:
                     dragger.update_mouse_position(event.pos)
                     clicked_Col = dragger.mouse_X // SQsize # Номер, нажатой строки (начиная с нуля).
                     clicked_Row = dragger.mouse_Y // SQsize # Номер, нажатого столбца (начиная с нуля).
-                    print(f"({dragger.mouse_X,dragger.mouse_Y}), ({clicked_Row,clicked_Col})")
+                    print(f"({dragger.mouse_X,dragger.mouse_Y}), (row({clicked_Row + 1}) -1) (col({clicked_Col + 1}) - 1)")
 
                     if game.board.squares[clicked_Row][clicked_Col].has_piece():  # На выбранной клетке в массиве squares есть ли фигура?
                         piece = game.board.squares[clicked_Row][clicked_Col].piece

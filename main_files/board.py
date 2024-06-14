@@ -35,9 +35,11 @@ class Board:
         #метод для ладьи
         self.squares[row_other][0] = Square(row_other, 0, Rook(color))
         self.squares[row_other][7] = Square(row_other, 7, Rook(color))
+        
 
         #метод для королевы
         self.squares[row_other][3] = Square(row_other, 3, Queen(color))
+        
 
         #метод для короля
         self.squares[row_other][4] = Square(row_other, 4, King(color))
@@ -45,7 +47,7 @@ class Board:
 
     def cal_moves(self, piece, row, col):
 
-        def pawn_moves():
+        def pawn_moves(): # Движения пешки
             step = 1 if piece.moved else 2
             # Вертикальное движение
             start = row + piece.dir
@@ -76,8 +78,32 @@ class Board:
                         move = Move(initial, final)
 
                         piece.add_move(move)
+        
+        def king_moves():
+            possible_moves = [ 
+                (row - 1, col + 0),
+                (row - 1, col + 1),
+                (row + 0, col + 1),
+                (row + 1, col + 1),
+                (row + 1, col + 0),
+                (row + 1, col - 1),
+                (row + 0, col - 1),
+                (row - 1, col - 1),
+            ]
+            for pos_move in possible_moves:
+                move_row, move_col = pos_move
+
+                if Square.in_range(move_row, move_col):
+                    if self.squares[move_row][move_col].empty_or_enemy(piece.color):
+                        initial = Square(row, col)
+                        # Фикирую все возможный ходы фигуры
+                        final = Square(move_row, move_col) # Недоделал фигуры(piece)
+
+                        move = Move(initial, final)
+
+                        piece.add_move(move)
             
-        def knight_moves():
+        def knight_moves(): # Движения коня
             # В идеале у коня 8 возможных ходов
             possible_moves = [
                 (row - 2, col + 1),
@@ -103,16 +129,64 @@ class Board:
 
                         piece.add_move(move)
                         
+        def straightline_move(incs): # Передвижения по прямой линии (inc - направление прямой линии)
+            for inc in incs:
+                inc_row, inc_col = inc
+                move_row = row + inc_row
+                move_col = col + inc_col
+                while True:
+                    if Square.in_range(move_row, move_col): # Проверка на выход за карту
+                        initial = Square(row, col)
+                        final = Square(move_row, move_col)
+                        move = Move(initial, final) 
+                        # Пустая клетка (add_move)
+                        if self.squares[move_row][move_col].isempty(): # Проверка на пустую клетку
+                            piece.add_move(move)
+                        # Протиник (add_move + break)
+                        if self.squares[move_row][move_col].has_enemy_piece(piece.color):
+                            piece.add_move(move)
+                            break # После встречи с противником линия должна остановиться
+                        # Союзник (break)
+                        if self.squares[move_row][move_col].has_team_piece(piece.color):
+                            break # После встречи с противником линия должна остановиться
+                    else: # Если ушел за пределы карту
+                        break
+                    move_row += inc_row
+                    move_col += inc_col
 
+
+                        
         if isinstance(piece, Pawn):  # piece.name == 'pawn' (одно и тоже)
             pawn_moves()
         elif isinstance(piece, Knight): # Конь
             knight_moves()
         elif isinstance(piece, Bishop):
-            pass
+            bishop_incs = [
+                (-1, 1), # Вверх вправо
+                (-1, -1), # Вверх влево
+                (1, 1), # Вниз вправо
+                (1, -1), # Вниз влево
+            ]
+            straightline_move(bishop_incs)
         elif isinstance(piece, Rook):
-            pass
+            rook_incs = [
+                (-1, 0), # Вверх
+                (0, 1), # Вправо
+                (1, 0), # Вниз
+                (0, -1) # Влево
+            ]
+            straightline_move(rook_incs)
         elif isinstance(piece, Queen):
-            pass
+            queen_incs = [
+                (-1, 1), # Вверх вправо
+                (-1, -1), # Вверх влево
+                (1, 1), # Вниз вправо
+                (1, -1), # Вниз влево
+                (-1, 0), # Вверх
+                (0, 1), # Вправо
+                (1, 0), # Вниз
+                (0, -1) # Влево
+            ]
+            straightline_move(queen_incs)
         elif isinstance(piece, King):
-            pass
+            king_moves()

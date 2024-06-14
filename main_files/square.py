@@ -14,6 +14,9 @@ class Square: # Класс клетки, у которой есть свой р�
 
     def has_enemy_piece(self, color):
         return self.has_piece() and self.piece.color != color # Получаем True если на клетке фигуру соперника
+    
+    def has_team_piece(self, color):
+        return self.has_piece() and self.piece.color == color # Получаем True если на клетке фигуру союзника
 
     def empty_or_enemy(self, color): # Объеженил проерку двух методов выше
         return self.isempty() or self.has_enemy_piece(color)
