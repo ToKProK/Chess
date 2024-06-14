@@ -62,8 +62,20 @@ class Board:
                         piece.add_move(move)
                     else:
                         break
+                else:
+                    break
             # Диогональное движение
-            move_row = 
+            move_row = row + piece.dir
+            move_cols = [col-1,col+1]
+            for move_col in move_cols:
+                if Square.in_range(move_row, move_col):  # Проверка на выход за карту
+                    if self.squares[move_row][move_col].has_enemy_piece(piece.color): # Проверка на нахождение врага на клетке
+                        initial = Square(row, col)
+                        final = Square(move_row, move_col)
+
+                        move = Move(initial, final)
+
+                        piece.add_move(move)
             
         def knight_moves():
             # В идеале у коня 8 возможных ходов
