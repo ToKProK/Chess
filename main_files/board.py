@@ -11,6 +11,7 @@ class Board:
         self._create()
         self._add_piece('white')
         self._add_piece('black')
+        self.last_move = None
 
     def _create(self):
         for row in range(Rows):
@@ -190,3 +191,21 @@ class Board:
             straightline_move(queen_incs)
         elif isinstance(piece, King):
             king_moves()
+    
+    def valid_move(self, piece, move):
+        return move in piece.moves
+ 
+    def move(self, piece, move):
+        initial =  move.initial
+        final = move.final 
+
+        # Обнавляем доску массива squares
+        self.squares[initial.row][initial.col].piece = None # Там где раньше находилась фигура теперь None
+        self.squares[final.row][final.col].piece = piece # В новом положение появляется фигура
+        # move
+        piece.moved = True
+
+        # Очищаем возможные ходы (поменяли позицию -> другие возможные ходы)
+        piece.clear_moves()
+
+        self.last_move = move

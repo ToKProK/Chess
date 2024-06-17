@@ -3,6 +3,8 @@ import sys
 
 from const import *
 from game import Game
+from square import Square
+from move import Move
 
 class Main:
     def __init__(self):
@@ -46,6 +48,18 @@ class Main:
 
                 # Отпускание клика
                 elif event.type == pygame.MOUSEBUTTONUP:
+                    if dragger.dragging:
+                        dragger.update_mouse_position(event.pos)
+                        now_row = dragger.mouse_Y // SQsize
+                        now_col = dragger.mouse_X // SQsize
+                        
+                        # Создаём move
+                        initial = Square(dragger.init_row, dragger.init_col)
+                        final = Square(now_row, now_col)
+                        move = Move(initial, final)
+
+                        if board.valid_move(dragger.piece, move):
+                            board.move(dragger.piece, move)
                     dragger.undrag_piece()
 
 

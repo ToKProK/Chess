@@ -6,6 +6,9 @@ class Square: # Класс клетки, у которой есть свой р�
         self.col = col 
         self.piece = piece 
 
+    def __eq__(self, move):
+        return self.row == move.row and self.col == move.col 
+
     def has_piece(self): # Получаем True если есть фигура
         return self.piece != None
     

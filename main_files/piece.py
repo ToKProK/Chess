@@ -7,7 +7,7 @@ class Piese:
         value_sing = 1 if color == 'white' else -1
         self.value = value * value_sing # Таким образом value у черных юут отрицательное, а у белых положительное
         self.moves = []
-        self.moved = False
+        self.moved = False 
         self.texture = texture
         self.set_texture()
         self.texture_rect = texture_rect
@@ -18,6 +18,9 @@ class Piese:
     def add_move(self, move):
         self.moves.append(move)
 
+    def clear_moves(self):
+        self.moves = []
+        
 
 
 class Pawn(Piese):
