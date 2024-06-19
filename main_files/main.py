@@ -36,9 +36,11 @@ class Main:
 
                     if game.board.squares[clicked_Row][clicked_Col].has_piece():  # На выбранной клетке в массиве squares есть ли фигура?
                         piece = game.board.squares[clicked_Row][clicked_Col].piece
-                        board.cal_moves(piece, clicked_Row, clicked_Col) # Просчитываем все вохможные ходы для выбранной фигуры
-                        dragger.save_initial(event.pos) # Сохраняем первоночальную позицию, для отката.
-                        dragger.drag_piece(piece) # Сохраняем выбранную фигуру
+                        # Проверка на выбор фигуры в зависимости от хода
+                        if piece.color == game.next_player:
+                            board.cal_moves(piece, clicked_Row, clicked_Col) # Просчитываем все вохможные ходы для выбранной фигуры
+                            dragger.save_initial(event.pos) # Сохраняем первоночальную позицию, для отката.
+                            dragger.drag_piece(piece) # Сохраняем выбранную фигуру
                 
                 # Передвижение мышки
                 elif event.type == pygame.MOUSEMOTION:
@@ -60,6 +62,8 @@ class Main:
 
                         if board.valid_move(dragger.piece, move):
                             board.move(dragger.piece, move)
+                            #Следующий ход
+                            game.next_turn()
                     dragger.undrag_piece()
 
 
