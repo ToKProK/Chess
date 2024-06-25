@@ -66,7 +66,14 @@ class Main:
                             #Следующий ход
                             game.next_turn()
                     dragger.undrag_piece()
-
+                
+                elif event.type == pygame.KEYDOWN:
+                    # Перезагрузка
+                    if event.key == pygame.K_r:
+                        game.reset()
+                        game = self.game
+                        board = self.game.board
+                        dragger = self.game.dragger
 
                 #Выход из приложения
                 elif event.type == pygame.QUIT:

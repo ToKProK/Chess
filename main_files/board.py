@@ -103,7 +103,48 @@ class Board:
                         move = Move(initial, final)
 
                         piece.add_move(move)
-            
+            # рокировка
+            if not piece.moved:
+                # Левая рокировка
+                    left_rook = self.squares[row][0].piece
+                    if isinstance(left_rook, Rook):
+                        if not left_rook.moved:
+                            for i in range(1, 4):
+                                if self.squares[row][i].has_piece(): # Другие фигуры перекрывают рокировку
+                                    break
+                                if i == 3:
+                                    piece.left_rook = left_rook
+
+                                    # Передвижение ладьи
+                                    initial = Square(row, 0)
+                                    final = Square(row, 3)
+                                    move = Move(initial, final)
+                                    left_rook.add_move(move) 
+                                    # Передвижение короля
+                                    initial = Square(row, col)
+                                    final = Square(row, 2)
+                                    move = Move(initial, final)
+                                    piece.add_move(move) 
+                # Правая рокировка
+                    right_rook = self.squares[row][7].piece
+                    if isinstance(right_rook, Rook):
+                        if not right_rook.moved:
+                            for i in range(5, 7):
+                                if self.squares[row][i].has_piece(): # Другие фигуры перекрывают рокировку
+                                    break
+                                if i == 6:
+                                    piece.right_rook = right_rook
+
+                                    # Передвижение ладьи
+                                    initial = Square(row, 7)
+                                    final = Square(row, 5)
+                                    move = Move(initial, final)
+                                    right_rook.add_move(move) 
+                                    # Передвижение короля
+                                    initial = Square(row, col)
+                                    final = Square(row, 6)
+                                    move = Move(initial, final) 
+                                    piece.add_move(move) 
         def knight_moves(): # Движения коня
             # В идеале у коня 8 возможных ходов
             possible_moves = [
@@ -194,7 +235,14 @@ class Board:
     
     def valid_move(self, piece, move):
         return move in piece.moves
- 
+
+    def chek_promotion(self, piece, final):
+        # Пешка в королеву
+        if final.row == 0 or final.row == 7:
+            self.squares[final.row][final.col].piece = Queen(piece.color)
+    def castling(self, initial, final):
+        return abs(initial.col - final.col) == 2
+
     def move(self, piece, move):
         initial =  move.initial
         final = move.final 
@@ -202,6 +250,15 @@ class Board:
         # Обнавляем доску массива squares
         self.squares[initial.row][initial.col].piece = None # Там где раньше находилась фигура теперь None
         self.squares[final.row][final.col].piece = piece # В новом положение появляется фигура
+        
+        if isinstance(piece, Pawn):
+            self.chek_promotion(piece, final) 
+        
+        if isinstance(piece, King):
+            if self.castling(initial, final):
+                dif =  final.col - initial.col
+                rook = piece.left_rook if (dif < 0) else piece.right_rook
+                self.move(rook, rook.moves[-1]) 
         # move
         piece.moved = True
 

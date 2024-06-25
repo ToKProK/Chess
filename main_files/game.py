@@ -59,3 +59,6 @@ class Game:
     # другие методы
     def next_turn(self):
           self.next_player = "white" if self.next_player == 'black' else 'black'
+
+    def reset(self):
+        self.__init__()
