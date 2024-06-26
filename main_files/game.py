@@ -59,11 +59,12 @@ class Game:
 
     def show_game_end(self, surface, game):
         if game.game_end:
-            font = pygame.font.SysFont("timesnewroman", 32)
+            font = pygame.font.SysFont("timesnewroman", 64)
             white = (0,0,0)
             black = (255, 255, 255)
-            winner_lable_text = font.render("Белые победили", 1, white, black) if self.next_player == 'white' else font.render("Чёрные победили", 1, white, black)
-            surface.blit(winner_lable_text, (0,0))
+            winner_lable_text = font.render("Белые победили", 1, white, black) if self.next_player == 'black' else font.render("Чёрные победили", 1, black, white)
+            size = (200, 300, 600, 500)
+            surface.blit(winner_lable_text, size)
 
 
 

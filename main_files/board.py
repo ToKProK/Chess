@@ -66,8 +66,7 @@ class Board:
                         if bool: # Данное условие позволяет вызывать метод только через файл main
                             if not self.in_check(piece, move):
                                 piece.add_move(move)
-                            else:
-                                break
+                            
                         else:
                             piece.add_move(move)
                     else:
@@ -222,7 +221,7 @@ class Board:
                         if bool: # Данное условие позволяет вызывать метод только через файл main
                             if not self.in_check(piece, move):
                                 piece.add_move(move)
-
+                            else: break 
                         else:
                             piece.add_move(move)
                         
