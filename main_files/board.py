@@ -2,7 +2,7 @@ from const import *
 from square import Square
 from piece import *
 from move import Move
-
+import copy
 # Данный класс представляет доску, которя является массивом "squares"
 class Board:
 
@@ -46,7 +46,7 @@ class Board:
         self.squares[row_other][4] = Square(row_other, 4, King(color))
 
 
-    def cal_moves(self, piece, row, col):
+    def cal_moves(self, piece, row, col, bool=True):
 
         def pawn_moves(): # Движения пешки
             step = 1 if piece.moved else 2
@@ -56,13 +56,18 @@ class Board:
             for move_row in range(start, end, piece.dir):
                 if Square.in_range(move_row): # Проверка каждого хода на выход фигуры за игровую доску
                     if self.squares[move_row][col].isempty(): # Проверям, что клетка пустая
+                        # Фиксирум изначальную позицию и новую
                         initial = Square(row, col)
-
                         final = Square(move_row, col)
-
+                        # Создаём новый доступный ход
                         move = Move(initial, final)
 
-                        piece.add_move(move)
+                        # Проверяем ход (ход может быть недоступен из-за моментального шаха и мата)
+                        if bool: # Данное условие позволяет вызывать метод только через файл main
+                            if not self.in_check(piece, move):
+                                piece.add_move(move)
+                        else:
+                            piece.add_move(move)
                     else:
                         break
                 else:
@@ -74,7 +79,8 @@ class Board:
                 if Square.in_range(move_row, move_col):  # Проверка на выход за карту
                     if self.squares[move_row][move_col].has_enemy_piece(piece.color): # Проверка на нахождение врага на клетке
                         initial = Square(row, col)
-                        final = Square(move_row, move_col)
+                        final_piece = self.squares[move_row][move_col].piece
+                        final = Square(move_row, move_col, final_piece)
 
                         move = Move(initial, final)
 
@@ -102,7 +108,14 @@ class Board:
 
                         move = Move(initial, final)
 
-                        piece.add_move(move)
+                        # Проверяем ход (ход может быть недоступен из-за моментального шаха и мата)
+                        if bool: # Данное условие позволяет вызывать метод только через файл main
+                            if not self.in_check(piece, move):
+                                piece.add_move(move)
+                            # else:
+                            #     break
+                        else:
+                            piece.add_move(move) 
             # рокировка
             if not piece.moved:
                 # Левая рокировка
@@ -118,13 +131,29 @@ class Board:
                                     # Передвижение ладьи
                                     initial = Square(row, 0)
                                     final = Square(row, 3)
-                                    move = Move(initial, final)
-                                    left_rook.add_move(move) 
+                                    moveR = Move(initial, final)
+                                     
                                     # Передвижение короля
                                     initial = Square(row, col)
                                     final = Square(row, 2)
-                                    move = Move(initial, final)
-                                    piece.add_move(move) 
+                                    moveK = Move(initial, final)
+                                    
+
+                                    
+                                    # Проверяем ход (ход может быть недоступен из-за моментального шаха и мата)
+                                    if bool: # Данное условие позволяет вызывать метод только через файл main
+                                        if not self.in_check(piece, moveR) and not self.in_check(left_rook, moveK):
+                                            # Добавляем ход ладье
+                                            left_rook.add_move(moveR) 
+                                            # Добавляем ход Королю
+                                            piece.add_move(moveK)
+                                        else:
+                                            break
+                                    else:
+                                            # Добавляем ход ладье
+                                            left_rook.add_move(moveR) 
+                                            # Добавляем ход Королю
+                                            piece.add_move(moveK)
                 # Правая рокировка
                     right_rook = self.squares[row][7].piece
                     if isinstance(right_rook, Rook):
@@ -138,13 +167,30 @@ class Board:
                                     # Передвижение ладьи
                                     initial = Square(row, 7)
                                     final = Square(row, 5)
-                                    move = Move(initial, final)
-                                    right_rook.add_move(move) 
+                                    moveR = Move(initial, final)
+                                    
                                     # Передвижение короля
                                     initial = Square(row, col)
                                     final = Square(row, 6)
-                                    move = Move(initial, final) 
-                                    piece.add_move(move) 
+                                    moveK = Move(initial, final) 
+                                    
+
+
+
+                                    # Проверяем ход (ход может быть недоступен из-за моментального шаха и мата)
+                                    if bool: # Данное условие позволяет вызывать метод только через файл main
+                                        if not self.in_check(piece, moveR) and not self.in_check(right_rook, moveK):
+                                            # Добавляем ход ладье
+                                            right_rook.add_move  (moveR) 
+                                            # Добавляем ход Королю
+                                            piece.add_move(moveK)
+                                        else:
+                                            break
+                                    else:
+                                            # Добавляем ход ладье
+                                            right_rook.add_move(moveR) 
+                                            # Добавляем ход Королю
+                                            piece.add_move(moveK)
         def knight_moves(): # Движения коня
             # В идеале у коня 8 возможных ходов
             possible_moves = [
@@ -165,11 +211,18 @@ class Board:
                         # Фиксирую позицию выбранной фигуры
                         initial = Square(row, col)
                         # Фикирую все возможный ходы фигуры
-                        final = Square(pos_move_row, pos_move_col) # Недоделал фигуры(piece)
+                        final_piece = self.squares[pos_move_row][pos_move_col].piece
+                        final = Square(pos_move_row, pos_move_col, final_piece) # Недоделал фигуры(piece)
 
                         move = Move(initial, final)
 
-                        piece.add_move(move)
+                        # Проверяем ход (ход может быть недоступен из-за моментального шаха и мата)
+                        if bool: # Данное условие позволяет вызывать метод только через файл main
+                            if not self.in_check(piece, move):
+                                piece.add_move(move)
+
+                        else:
+                            piece.add_move(move)
                         
         def straightline_move(incs): # Передвижения по прямой линии (inc - направление прямой линии)
             for inc in incs:
@@ -179,17 +232,28 @@ class Board:
                 while True:
                     if Square.in_range(move_row, move_col): # Проверка на выход за карту
                         initial = Square(row, col)
-                        final = Square(move_row, move_col)
+                        final_piece = self.squares[move_row][move_col].piece
+                        final = Square(move_row, move_col, final_piece)
                         move = Move(initial, final) 
                         # Пустая клетка (add_move)
                         if self.squares[move_row][move_col].isempty(): # Проверка на пустую клетку
-                            piece.add_move(move)
+                            # Проверяем ход (ход может быть недоступен из-за моментального шаха и мата)
+                            if bool: # Данное условие позволяет вызывать метод только через файл main
+                                if not self.in_check(piece, move):
+                                    piece.add_move(move)
+                            else:
+                                piece.add_move(move)
                         # Протиник (add_move + break)
-                        if self.squares[move_row][move_col].has_enemy_piece(piece.color):
-                            piece.add_move(move)
+                        elif self.squares[move_row][move_col].has_enemy_piece(piece.color):
+                                                        # Проверяем ход (ход может быть недоступен из-за моментального шаха и мата)
+                            if bool: # Данное условие позволяет вызывать метод только через файл main
+                                if not self.in_check(piece, move):
+                                    piece.add_move(move)
+                            else:
+                                piece.add_move(move)
                             break # После встречи с противником линия должна остановиться
                         # Союзник (break)
-                        if self.squares[move_row][move_col].has_team_piece(piece.color):
+                        elif self.squares[move_row][move_col].has_team_piece(piece.color):
                             break # После встречи с противником линия должна остановиться
                     else: # Если ушел за пределы карту
                         break
@@ -242,7 +306,23 @@ class Board:
             self.squares[final.row][final.col].piece = Queen(piece.color)
     def castling(self, initial, final):
         return abs(initial.col - final.col) == 2
+    # Данный метод вызывается в этом файле в методе cal_move
+    def in_check(self, piece, move): # Данный метод позволит запрещать делать ходы, которые приведут к немедленному порожению
+        temp_piece = copy.deepcopy(piece)# Копируем доску
+        temp_board = copy.deepcopy(self)# Копируем доску
+        temp_board.move(temp_piece, move) # Делаем ход, который попадает в функцию (через переменную 'move')
 
+        for row in range(Rows):
+            for col in range(Cols):
+                if temp_board.squares[row][col].has_enemy_piece(piece.color): # Перебираем всю доску в поисках фигур противникаэ
+                    p = temp_board.squares[row][col].piece # Переменная с фигурой соперника
+                    temp_board.cal_moves(p, row, col, bool=False) # Прощитываем все ходы доступные фигуре
+                    for m in p.moves:
+                        if isinstance(m.final.piece, King): # Если фигура может убить короля 
+                            return True
+        return False
+
+ 
     def move(self, piece, move):
         initial =  move.initial
         final = move.final 

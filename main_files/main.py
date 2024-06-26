@@ -39,7 +39,7 @@ class Main:
                         piece = game.board.squares[clicked_Row][clicked_Col].piece
                         # Проверка на выбор фигуры в зависимости от хода
                         if piece.color == game.next_player:
-                            board.cal_moves(piece, clicked_Row, clicked_Col) # Просчитываем все вохможные ходы для выбранной фигуры
+                            board.cal_moves(piece, clicked_Row, clicked_Col, bool=True) #  Просчитываем все вохможные ходы для выбранной фигуры
                             dragger.save_initial(event.pos) # Сохраняем первоночальную позицию, для отката.
                             dragger.drag_piece(piece) # Сохраняем выбранную фигуру
                 
