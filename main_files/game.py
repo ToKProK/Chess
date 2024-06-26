@@ -63,7 +63,7 @@ class Game:
             white = (0,0,0)
             black = (255, 255, 255)
             winner_lable_text = font.render("Белые победили", 1, white, black) if self.next_player == 'black' else font.render("Чёрные победили", 1, black, white)
-            size = (200, 300, 600, 500)
+            size = winner_lable_text.get_rect(center=(Width//2, Height//2))
             surface.blit(winner_lable_text, size)
 
 
