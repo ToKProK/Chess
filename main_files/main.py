@@ -22,11 +22,12 @@ class Main:
             game.show_last_move(screen)
             game.show_moves(screen)
             game.show_pieces(screen)
-            
+            game.show_game_end(screen, game)
             if dragger.dragging:
                 dragger.upadate_blit(screen)
 
             for event in pygame.event.get():
+                
                 
                 # Клик
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -65,7 +66,12 @@ class Main:
                             board.move(dragger.piece, move)
                             #Следующий ход
                             game.next_turn()
+                            if board.check_finish(game.next_player):
+                                game.game_end = True
+                                print("game end!")
+
                     dragger.undrag_piece()
+
                 
                 elif event.type == pygame.KEYDOWN:
                     # Перезагрузка

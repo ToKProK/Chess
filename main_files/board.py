@@ -66,6 +66,8 @@ class Board:
                         if bool: # Данное условие позволяет вызывать метод только через файл main
                             if not self.in_check(piece, move):
                                 piece.add_move(move)
+                            else:
+                                break
                         else:
                             piece.add_move(move)
                     else:
@@ -308,13 +310,13 @@ class Board:
         return abs(initial.col - final.col) == 2
     # Данный метод вызывается в этом файле в методе cal_move
     def in_check(self, piece, move): # Данный метод позволит запрещать делать ходы, которые приведут к немедленному порожению
-        temp_piece = copy.deepcopy(piece)# Копируем доску
+        temp_piece = copy.deepcopy(piece)# Копируем фигуру
         temp_board = copy.deepcopy(self)# Копируем доску
         temp_board.move(temp_piece, move) # Делаем ход, который попадает в функцию (через переменную 'move')
 
         for row in range(Rows):
             for col in range(Cols):
-                if temp_board.squares[row][col].has_enemy_piece(piece.color): # Перебираем всю доску в поисках фигур противникаэ
+                if temp_board.squares[row][col].has_enemy_piece(piece.color): # Перебираем всю доску в поисках фигур противника
                     p = temp_board.squares[row][col].piece # Переменная с фигурой соперника
                     temp_board.cal_moves(p, row, col, bool=False) # Прощитываем все ходы доступные фигуре
                     for m in p.moves:
@@ -322,7 +324,20 @@ class Board:
                             return True
         return False
 
- 
+    def check_finish(self, color):
+        temp_board = copy.deepcopy(self)# Копируем доску
+        for row in range(Rows):
+            for col in range(Cols):
+                if temp_board.squares[row][col].has_team_piece(color): # Перебираем всю доску в поисках союзных фигур
+                    p = temp_board.squares[row][col].piece # Переменная с фигурой соперника
+                    temp_board.cal_moves(p, row, col, bool=True)
+                    if p.moves:
+                        return False
+        return True
+                        
+                        
+
+
     def move(self, piece, move):
         initial =  move.initial
         final = move.final 

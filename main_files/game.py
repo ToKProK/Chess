@@ -8,6 +8,7 @@ class Game:
         self.next_player = 'white' # Чей ход
         self.board = Board()
         self.dragger = Dragger()
+        self.game_end = False
 
     # Рисуем доску
     def show_bg(self, surface): 
@@ -55,6 +56,17 @@ class Game:
                 rect = (i.col * SQsize, i.row * SQsize, SQsize, SQsize)
 
                 pygame.draw.rect(surface, color, rect)
+
+    def show_game_end(self, surface, game):
+        if game.game_end:
+            font = pygame.font.SysFont("timesnewroman", 32)
+            white = (0,0,0)
+            black = (255, 255, 255)
+            winner_lable_text = font.render("Белые победили", 1, white, black) if self.next_player == 'white' else font.render("Чёрные победили", 1, white, black)
+            surface.blit(winner_lable_text, (0,0))
+
+
+
 
     # другие методы
     def next_turn(self):
